@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,25 +45,32 @@ public final class ItemRecommendationControllerImpl implements IItemRecommendati
     private UserRepository userRepository;
 
     @Override
-    @CrossOrigin( origins ="http://localhost:8085")
+    @CrossOrigin(origins = "http://localhost:8085")
     public ResponseEntity<Object> health() {
         return new ResponseEntity<>("Application is up and running!", HttpStatus.OK);
     }
 
     @Override
-    public String generateToken(@ApiParam(value = "The User Details") @NotNull(message = "User Details are required") @RequestBody UserDetails userDetails) {
-        final JWTTokenHandlerImpl jwtTokenGenerator = new JWTTokenHandlerImpl();
+    public ResponseEntity<String> generateToken(@ApiParam(value = "The User Details") @NotNull(message = "User Details are required") @RequestBody UserDetails userDetails) {
 
-        final JwtUser jwtUserJSON = new JwtUser();
+        // Check if valid user details exist in the Database before token generation
+        final List<Users> usersList = userRepository.fetchUserDetails(userDetails.getUserId(), userDetails.getPassword());
+        if (usersList != null && !usersList.isEmpty()) {
 
-        jwtUserJSON.setUserId(userDetails.getUserId());
-        jwtUserJSON.setPassword(userDetails.getPassword());
+            final JWTTokenHandlerImpl jwtTokenGenerator = new JWTTokenHandlerImpl();
+            final JwtUser jwtUserJSON = new JwtUser();
 
-        return jwtTokenGenerator.generate(jwtUserJSON);
+            jwtUserJSON.setUserId(userDetails.getUserId());
+            jwtUserJSON.setPassword(userDetails.getPassword());
+
+            return new ResponseEntity<>(jwtTokenGenerator.generate(jwtUserJSON), HttpStatus.OK);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     @Override
-    @CrossOrigin( origins ="http://localhost:8085")
+    @CrossOrigin(origins = "http://localhost:8085")
     public ResponseEntity<Recommendations> findOrdersByUserId(HttpServletRequest request, @ApiParam(value = "The User Id") @NotNull(message = "User Id is required.") @PathVariable("userId") final Long userId) {
 
         // Perform Authorization

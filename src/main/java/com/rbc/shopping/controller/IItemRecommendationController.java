@@ -55,7 +55,7 @@ public interface IItemRecommendationController {
             }
     )
     @PostMapping(value = "/auth/generate-token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    String generateToken(@ApiParam(value = "The User Details") @NotNull(message = "User Details are required") @RequestBody UserDetails userDetails);
+    ResponseEntity<String>  generateToken(@ApiParam(value = "The User Details") @NotNull(message = "User Details are required") @RequestBody UserDetails userDetails);
 
 
     /**
@@ -79,5 +79,4 @@ public interface IItemRecommendationController {
     )
     @GetMapping(value = "/recommendations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Recommendations> findOrdersByUserId(HttpServletRequest request, @ApiParam(value = "The User Id") @NotNull(message = "User Id is required.") @PathVariable("userId") final Long userId);
-
 }
