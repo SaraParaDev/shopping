@@ -68,8 +68,11 @@ public final class ItemRecommendationControllerImpl implements IItemRecommendati
         }
     }
 
+    /*
+     * Allowing Localhost 8085 and shopping.rbc.com origins. Localhost is allowed for testing purposes.
+     */
     @Override
-    @CrossOrigin(origins = "http://localhost:8085")
+    @CrossOrigin(origins = {"http://localhost:8085", "http://shopping.rbc.com"})
     public ResponseEntity<Recommendations> findOrdersByUserId(HttpServletRequest request, @ApiParam(value = "The User Id") @NotNull(message = "User Id is required.") @PathVariable("userId") final Long userId) {
 
         // Perform Authorization
