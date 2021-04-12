@@ -45,7 +45,6 @@ public final class ItemRecommendationControllerImpl implements IItemRecommendati
     private UserRepository userRepository;
 
     @Override
-    @CrossOrigin(origins = "http://localhost:8085")
     public ResponseEntity<Object> health() {
         return new ResponseEntity<>("Application is up and running!", HttpStatus.OK);
     }

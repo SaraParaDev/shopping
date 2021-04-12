@@ -36,4 +36,6 @@ public class AppConstants {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
+    public static final String SCHEDULER_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
+
 }
