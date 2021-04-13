@@ -26,17 +26,17 @@ public class JWTTokenHandlerImpl implements IJWTTokenHandler {
     }
 
     @Override
-    public JwtUser validate(String token) {
+    public JwtUser validate(final String token) {
         JwtUser jwtUser = null;
         try {
             // Parse the token
-            Claims requestBody = Jwts.parser().setSigningKey(AppConstants.SECRET_KEY).parseClaimsJws(token).getBody();
+            final Claims requestBody = Jwts.parser().setSigningKey(AppConstants.SECRET_KEY).parseClaimsJws(token).getBody();
 
             jwtUser = new JwtUser();
             jwtUser.setUserId(Long.parseLong((String) requestBody.get(AppConstants.USER_ID)));
             jwtUser.setPassword((String) requestBody.get(AppConstants.PASSWORD));
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
 			/*
 			Throw error in case of malformed jwt token or invalid token
 			 */

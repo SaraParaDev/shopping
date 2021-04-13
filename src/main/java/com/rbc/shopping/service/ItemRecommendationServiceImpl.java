@@ -51,7 +51,7 @@ public final class ItemRecommendationServiceImpl implements IItemRecommendationS
         final ItemsOnSale itemsOnSale = new ItemsOnSale();
 
         //Highest rated category by user (My Orders)
-        final Set<RecommendedItems> myOrdersRecommendationList = new HashSet<>();
+        final LinkedList<RecommendedItems> myOrdersRecommendationList = new LinkedList<>();
         final List<Orders> myOrdersList = orderRepository.findOrdersByUserId(userId);
 
         getRecommendedList(myOrdersRecommendationList, myOrdersList, AppConstants.MY_ORDERS_COMMENT);
@@ -59,7 +59,7 @@ public final class ItemRecommendationServiceImpl implements IItemRecommendationS
         itemsOnSale.setMyOrdersList(myOrdersRecommendationList);
 
         // Suggestions based on Wish List
-        final Set<RecommendedItems> wishItemsList = new HashSet<>();
+        final LinkedList<RecommendedItems> wishItemsList = new LinkedList<>();
         final Set<Wish> wishList = wishRepository.findWishByUserId(userId);
 
         wishList.forEach(wish -> {
@@ -81,7 +81,7 @@ public final class ItemRecommendationServiceImpl implements IItemRecommendationS
         itemsOnSale.setWishList(wishItemsList);
 
         //Hot Deals based on highest rated categories
-        final Set<RecommendedItems> hotDealsList = new HashSet<>();
+        final LinkedList<RecommendedItems> hotDealsList = new LinkedList<>();
         final List<Orders> allOrdersList = orderRepository.findOrdersByOtherUsers(userId);
 
         getRecommendedList(hotDealsList, allOrdersList, AppConstants.HOT_DEALS_COMMENT);
@@ -131,11 +131,11 @@ public final class ItemRecommendationServiceImpl implements IItemRecommendationS
     /**
      * Generates Recommended list based on Orders list and its categories.
      *
-     * @param recommendedItemsList Set of recommended items.
+     * @param recommendedItemsList List of recommended items.
      * @param ordersList           List of Order List.
      * @param commentCategory      String for comment category.
      */
-    private void getRecommendedList(Set<RecommendedItems> recommendedItemsList, List<Orders> ordersList, final String commentCategory) {
+    private void getRecommendedList(LinkedList<RecommendedItems> recommendedItemsList, List<Orders> ordersList, final String commentCategory) {
 
         // Group Orders by rating
         final Map<Long, List<Orders>> groupOrdersByUserRating =
@@ -158,8 +158,12 @@ public final class ItemRecommendationServiceImpl implements IItemRecommendationS
                 }
         ));
 
+        // Sort the Map Category Map with Highest rating
+        final Map<Long, Long> sortedCategoryMap = new LinkedHashMap<>();
+        finalMap.entrySet().stream().sorted(Map.Entry.<Long, Long>comparingByValue().reversed()).forEachOrdered( x -> sortedCategoryMap.put(x.getKey(), x.getValue()));
+
         //Get items from highest rated categories in the order
-        finalMap.forEach((itemCategoryId, rating) -> itemRepository.findItemsByCategoryId(itemCategoryId).forEach(item -> {
+        sortedCategoryMap.forEach((itemCategoryId, rating) -> itemRepository.findItemsByCategoryId(itemCategoryId).forEach(item -> {
 
             final RecommendedItems recommendedItem = new RecommendedItems();
             recommendedItem.setItemId(item.getId());

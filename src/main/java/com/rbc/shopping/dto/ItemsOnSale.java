@@ -2,6 +2,7 @@ package com.rbc.shopping.dto;
 
 import lombok.Data;
 
+import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -13,17 +14,17 @@ import java.util.Set;
 public final class ItemsOnSale {
 
     /**
-     * Set of recommended items from My Orders List.
+     * List of recommended items from My Orders List.
      */
-    private Set<RecommendedItems> myOrdersList;
+    private LinkedList<RecommendedItems> myOrdersList;
 
     /**
-     * Set of recommended items from wish list.
+     * List of recommended items from wish list.
      */
-    private Set<RecommendedItems> wishList;
+    private LinkedList<RecommendedItems> wishList;
 
     /**
-     * Set of recommended items from Hot deals list.
+     * List of recommended items from Hot deals list.
      */
-    private Set<RecommendedItems> hotDealsList;
+    private LinkedList<RecommendedItems> hotDealsList;
 }
