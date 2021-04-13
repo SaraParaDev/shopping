@@ -78,5 +78,5 @@ public interface IItemRecommendationController {
             }
     )
     @GetMapping(value = "/recommendations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Recommendations> findOrdersByUserId(HttpServletRequest request, @ApiParam(value = "The User Id") @NotNull(message = "User Id is required.") @PathVariable("userId") final Long userId);
+    ResponseEntity<Recommendations> getRecommendedItems(HttpServletRequest request, @ApiParam(value = "The User Id") @NotNull(message = "User Id is required.") @PathVariable("userId") final Long userId);
 }

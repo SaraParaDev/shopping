@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Repository class for WISH table.
@@ -23,5 +23,5 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
      * @return Returns set of Wish list for the User.
      */
     @Query(value = "SELECT * FROM WISH WHERE user_id = ?1", nativeQuery = true)
-    Set<Wish> findWishByUserId(Long userId);
+    List<Wish> findWishByUserId(Long userId);
 }

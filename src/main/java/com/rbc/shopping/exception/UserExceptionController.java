@@ -38,7 +38,7 @@ public class UserExceptionController {
      */
     @ExceptionHandler(value = ApplicationException.class)
     public ResponseEntity<Object> applicationException(ApplicationException exception) {
-        return new ResponseEntity<>(AppConstants.APP_ERROR, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(AppConstants.APP_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

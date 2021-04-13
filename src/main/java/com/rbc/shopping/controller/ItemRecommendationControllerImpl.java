@@ -73,7 +73,7 @@ public final class ItemRecommendationControllerImpl implements IItemRecommendati
      */
     @Override
     @CrossOrigin(origins = {"http://localhost:8085", "http://shopping.rbc.com"})
-    public ResponseEntity<Recommendations> findOrdersByUserId(HttpServletRequest request, @ApiParam(value = "The User Id") @NotNull(message = "User Id is required.") @PathVariable("userId") final Long userId) {
+    public ResponseEntity<Recommendations> getRecommendedItems(HttpServletRequest request, @ApiParam(value = "The User Id") @NotNull(message = "User Id is required.") @PathVariable("userId") final Long userId) {
 
         // Perform Authorization
         final String authHeader = request.getHeader(AppConstants.AUTHORIZATION_HEADER);

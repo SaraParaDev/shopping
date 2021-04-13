@@ -60,7 +60,7 @@ public final class ItemRecommendationServiceImpl implements IItemRecommendationS
 
         // Suggestions based on Wish List
         final LinkedList<RecommendedItems> wishItemsList = new LinkedList<>();
-        final Set<Wish> wishList = wishRepository.findWishByUserId(userId);
+        final List<Wish> wishList = wishRepository.findWishByUserId(userId);
 
         wishList.forEach(wish -> {
             itemRepository.findItemsByCategoryId(wish.getItem().getItemCategory().getId()).forEach(item -> {
@@ -116,9 +116,9 @@ public final class ItemRecommendationServiceImpl implements IItemRecommendationS
         boolean isValid = false;
 
         if (token != null && !token.isEmpty()) {
-            final JWTTokenHandlerImpl jwtTokenGenerator = new JWTTokenHandlerImpl();
+            final JWTTokenHandlerImpl jwtTokenHandler = new JWTTokenHandlerImpl();
 
-            final JwtUser jwtUser = jwtTokenGenerator.validate(token);
+            final JwtUser jwtUser = jwtTokenHandler.validate(token);
 
             // Check valid jwt token and if the token belongs to the user id passed in the url.
             isValid = (jwtUser != null && (jwtUser.getUserId().compareTo(userId) == 0));
